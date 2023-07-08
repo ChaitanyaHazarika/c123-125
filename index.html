@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"
+        integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.0.0/p5.js"></script>
+    <script src="https://unpkg.com/ml5@0.4.3/dist/ml5.min.js"></script>
+    <title>Font Manipulator</title>
+</head>
+
+<body>
+    <h1 class="btn btn-info">Font Manipulator</h1>
+    <span id="instruction">Note: Get Your Left And Right Wrist Closer To Reduce The font Size, To Increase The Font Size
+        Do the opposite <br> Move Your Nose To Move the text (i know it is dumb just do it)</span>
+    <div id="footer">
+        <h4>Created by me!</h4>
+
+    </div>
+    <style>
+        canvas {
+            background-color: gray;
+
+        }
+    </style>
+    <script>
+        difference = 0
+        lx = 0
+        rx = 0
+
+        function setup() {
+            video = createCapture(VIDEO)
+            video.size(550, 500)
+            canvas = createCanvas(480, 480)
+            canvas.position(560, 90)
+
+            posenet = ml5.poseNet(video, modalLoaded)
+            posenet.on('pose', gotPoses)
+
+
+        }
+        function modalLoaded() {
+            console.log("LOCK AND LOADED");
+        }
+        function gotPoses(results) {
+            console.log('hello');
+            if (results.length > 0) {
+                console.log(results);
+                lx = results[0].pose.leftWrist.x
+                rx = results[0].pose.rightWrist.x
+                difference = lx - rx
+                draw()
+            }
+
+            function draw() {
+                console.log('hello');
+                background('gray')
+                textSize(difference)
+                fill('yellow')
+                text("Chaitanya YAYYY", 50, 400)
+
+            }
+        }
+
+    </script>
+</body>
+
+</html>
